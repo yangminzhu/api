@@ -244,6 +244,298 @@
       }
     },
     {
+      "protopath": "authentication:/:v1alpha2:/:authenticator.proto",
+      "def": {
+        "enums": [
+          {
+            "name": "Authenticator.PrincipalOutput",
+            "enum_fields": [
+              {
+                "name": "UNSPECIFIED"
+              },
+              {
+                "name": "VALIDATE_ONLY",
+                "integer": 1
+              },
+              {
+                "name": "SOURCE_PRINCIPAL",
+                "integer": 2
+              },
+              {
+                "name": "REQUEST_AUTH_PRINCIPAL",
+                "integer": 3
+              }
+            ]
+          }
+        ],
+        "messages": [
+          {
+            "name": "Authenticator",
+            "fields": [
+              {
+                "id": 1,
+                "name": "mtls",
+                "type": "MutualTls"
+              },
+              {
+                "id": 2,
+                "name": "jwt",
+                "type": "Jwt"
+              },
+              {
+                "id": 3,
+                "name": "principal",
+                "type": "PrincipalOutput"
+              }
+            ]
+          }
+        ],
+        "imports": [
+          {
+            "path": "authentication/v1alpha2/mtls_method.proto"
+          },
+          {
+            "path": "authentication/v1alpha2/jwt_method.proto"
+          }
+        ],
+        "package": {
+          "name": "istio.authentication.v1alpha2"
+        }
+      }
+    },
+    {
+      "protopath": "authentication:/:v1alpha2:/:jwt_method.proto",
+      "def": {
+        "messages": [
+          {
+            "name": "Jwt",
+            "fields": [
+              {
+                "id": 1,
+                "name": "issuer",
+                "type": "string"
+              },
+              {
+                "id": 2,
+                "name": "audiences",
+                "type": "string",
+                "is_repeated": true
+              },
+              {
+                "id": 3,
+                "name": "jwks_uri",
+                "type": "string"
+              },
+              {
+                "id": 10,
+                "name": "jwks",
+                "type": "string"
+              },
+              {
+                "id": 6,
+                "name": "jwt_headers",
+                "type": "string",
+                "is_repeated": true
+              },
+              {
+                "id": 7,
+                "name": "jwt_params",
+                "type": "string",
+                "is_repeated": true
+              }
+            ]
+          }
+        ],
+        "package": {
+          "name": "istio.authentication.v1alpha2"
+        }
+      }
+    },
+    {
+      "protopath": "authentication:/:v1alpha2:/:mtls_method.proto",
+      "def": {
+        "enums": [
+          {
+            "name": "MutualTls.Mode",
+            "enum_fields": [
+              {
+                "name": "INVALID"
+              },
+              {
+                "name": "STRICT",
+                "integer": 1
+              },
+              {
+                "name": "PERMISSIVE",
+                "integer": 2
+              }
+            ]
+          }
+        ],
+        "messages": [
+          {
+            "name": "MutualTls",
+            "fields": [
+              {
+                "id": 2,
+                "name": "mode",
+                "type": "Mode"
+              }
+            ]
+          }
+        ],
+        "package": {
+          "name": "istio.authentication.v1alpha2"
+        }
+      }
+    },
+    {
+      "protopath": "authentication:/:v1alpha2:/:policy.proto",
+      "def": {
+        "messages": [
+          {
+            "name": "AuthenticationPolicy",
+            "fields": [
+              {
+                "id": 1,
+                "name": "selector",
+                "type": "istio.common.v1beta1.Selector"
+              },
+              {
+                "id": 3,
+                "name": "rules",
+                "type": "AuthenticatorRule",
+                "is_repeated": true
+              }
+            ],
+            "maps": [
+              {
+                "key_type": "string",
+                "field": {
+                  "id": 2,
+                  "name": "authenticators",
+                  "type": "Authenticator"
+                }
+              }
+            ]
+          },
+          {
+            "name": "AuthenticatorRule",
+            "fields": [
+              {
+                "id": 1,
+                "name": "match",
+                "type": "Match"
+              },
+              {
+                "id": 2,
+                "name": "first_of",
+                "type": "AuthenticatorRef",
+                "is_repeated": true
+              }
+            ]
+          },
+          {
+            "name": "AuthenticatorRef",
+            "fields": [
+              {
+                "id": 1,
+                "name": "authenticator",
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "name": "Match",
+            "fields": [
+              {
+                "id": 1,
+                "name": "port",
+                "type": "uint32"
+              },
+              {
+                "id": 2,
+                "name": "uri",
+                "type": "istio.common.v1beta1.StringMatch"
+              }
+            ]
+          }
+        ],
+        "imports": [
+          {
+            "path": "authentication/v1alpha2/authenticator.proto"
+          },
+          {
+            "path": "common/v1beta1/selector.proto"
+          },
+          {
+            "path": "common/v1beta1/match.proto"
+          }
+        ],
+        "package": {
+          "name": "istio.authentication.v1alpha2"
+        }
+      }
+    },
+    {
+      "protopath": "common:/:v1beta1:/:match.proto",
+      "def": {
+        "messages": [
+          {
+            "name": "StringMatch",
+            "fields": [
+              {
+                "id": 1,
+                "name": "exact",
+                "type": "string"
+              },
+              {
+                "id": 2,
+                "name": "prefix",
+                "type": "string"
+              },
+              {
+                "id": 3,
+                "name": "suffix",
+                "type": "string"
+              },
+              {
+                "id": 4,
+                "name": "regex",
+                "type": "string"
+              }
+            ]
+          }
+        ],
+        "package": {
+          "name": "istio.common.v1beta1"
+        }
+      }
+    },
+    {
+      "protopath": "common:/:v1beta1:/:selector.proto",
+      "def": {
+        "messages": [
+          {
+            "name": "Selector",
+            "maps": [
+              {
+                "key_type": "string",
+                "field": {
+                  "id": 1,
+                  "name": "match_labels",
+                  "type": "string"
+                }
+              }
+            ]
+          }
+        ],
+        "package": {
+          "name": "istio.common.v1beta1"
+        }
+      }
+    },
+    {
       "protopath": "envoy:/:config:/:filter:/:http:/:authn:/:v2alpha1:/:config.proto",
       "def": {
         "messages": [
@@ -2482,6 +2774,16 @@
                 "id": 8,
                 "name": "attributes_for_mixer_proxy",
                 "type": "Attributes"
+              },
+              {
+                "id": 9,
+                "name": "report_batch_max_entries",
+                "type": "uint32"
+              },
+              {
+                "id": 10,
+                "name": "report_batch_max_time",
+                "type": "google.protobuf.Duration"
               }
             ]
           },
